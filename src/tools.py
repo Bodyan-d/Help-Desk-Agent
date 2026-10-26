@@ -4,8 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 
-from base_words import STOP_WORDS, SYNONYMS
-from helpers import tokenize
+from .helpers import tokenize
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data"
 POLICIES_PATH = DATA_PATH / "policies"

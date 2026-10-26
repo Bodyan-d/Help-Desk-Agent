@@ -1,5 +1,5 @@
 import re
-from base_words import STOP_WORDS, SYNONYMS
+from .base_words import STOP_WORDS, SYNONYMS
 
 def normalize_text(text: str) -> str:
     text = text.lower()
