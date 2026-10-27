@@ -28,4 +28,5 @@ SYNONYMS = {
     "kids": "child",
     "money": "refund",
     "back": "refund",
+    "helmets": "helmet",
 }
