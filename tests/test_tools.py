@@ -8,6 +8,7 @@ from src.tools import (
 
 from src.helpers import (
     tokenize,
+    calculate_relevance
 )
 
 @pytest.mark.parametrize("booking_id,expected", [
@@ -47,3 +48,33 @@ def test_policy_search():
         result["heading"] == "Deposit"
         for result in results
     )
+
+def test_helmet_policy_search():
+    results = search_policies("Are e-bike helmets free?")
+
+    assert results[0]["heading"] == "Do I have to wear a helmet?"
+    
+def test_age_policy_ranking():
+    results = search_policies(
+        "Can my 14-year-old rent an e-bike?"
+    )
+
+    assert results
+    assert results[0]["heading"] == "Are there age limits?"
+
+def test_specific_heading_scores_higher():
+    query_words = {"bike", "helmet"}
+
+    general_score = calculate_relevance(
+        query_words,
+        section="Bike rental information",
+        heading="Bike rental"
+    )
+
+    specific_score = calculate_relevance(
+        query_words,
+        section="Helmets are available",
+        heading="Helmet requirements"
+    )
+
+    assert specific_score > general_score

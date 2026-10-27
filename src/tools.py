@@ -4,7 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 
-from .helpers import tokenize
+from .helpers import tokenize, calculate_relevance
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data"
 POLICIES_PATH = DATA_PATH / "policies"
@@ -87,14 +87,11 @@ def search_policies(query: str, limit: int = 3) -> list[dict]:
             lines = section.splitlines()
             heading = lines[0]
 
-            section_words = tokenize(section)
-            heading_words = tokenize(heading)
-
-            content_score = len(query_words & section_words)
-            heading_score = len(query_words & heading_words) * 2
-
-            score = content_score + heading_score
-
+            score = calculate_relevance(
+                query_words=query_words,
+                section=section,
+                heading=heading
+            )
             if score > 0:
                 results.append({
                     "source": file.name,

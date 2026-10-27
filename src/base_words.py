@@ -30,3 +30,11 @@ SYNONYMS = {
     "back": "refund",
     "helmets": "helmet",
 }
+
+GENERIC_WORDS = {
+    "bike",
+    "rent",
+    "rental",
+    "electric",
+    "city",
+}
