@@ -28,23 +28,30 @@ Rules:
   help@citywheels.example.
 - Do not claim that a booking has been cancelled.
 - Refund calculations use the fixed date from the assignment.
+- For voucher payments, explain that the rental refund
+  is issued as a new voucher, not cash.
+- Explain that the deposit is returned using its original
+  payment method.
 - Answer the customer's specific question.
   Do not suggest alternative bike types unless asked.
 """
 
 
-def run_agent(question: str, client=None, max_steps: int = 5, tool_calls=None) -> str:
+def run_agent(question: str, client=None, max_steps: int = 5, tool_calls=None, history=None) -> str:
     if client is None:
         client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
     model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
-    history = [
+    if history is None:
+       history = []
+
+    history.append(
         types.Content(
             role="user",
             parts=[types.Part.from_text(text=question)]
         )
-    ]
+    )
 
     config = types.GenerateContentConfig(
         system_instruction=SYSTEM_PROMPT,
@@ -72,19 +79,12 @@ def run_agent(question: str, client=None, max_steps: int = 5, tool_calls=None) -
 
         function_calls = response.function_calls or []
         
-        if tool_calls is not None:
-            for call in function_calls:
-                tool_calls.append({
-                    "name": call.name,
-                    "args": dict(call.args or {})
-                })
+        _record_tool_calls(function_calls, tool_calls)
                 
         if not function_calls:
             return response.text or "Sorry, no answer was generated."
 
         tool_responses = [_handle_tool_call(call) for call in function_calls]
-        
-        print("tool_responses:", tool_responses)
 
         history.append(
             types.Content(
@@ -96,11 +96,22 @@ def run_agent(question: str, client=None, max_steps: int = 5, tool_calls=None) -
     return "Sorry, I could not complete the request."
 
 
+def _record_tool_calls(function_calls, tool_calls):
+    if tool_calls is None:
+        return
+
+    for call in function_calls:
+        tool_calls.append({
+            "name": call.name,
+            "args": dict(call.args or {})
+        })
+
+
 def _handle_tool_call(call):
     name = call.name if isinstance(call.name, str) else "unknown"
     arguments = dict(call.args or {})
 
-    print(f"[TOOL CALL] {name}: {arguments}")
+    # print(f"[TOOL CALL] {name}: {arguments}")
 
     if name not in TOOLS:
         result = {"error": "Unknown tool"}
@@ -125,22 +136,43 @@ def _invoke_tool(name, arguments):
         return {"error": f"Invalid tool arguments: {error}"}
 
 
+
 if __name__ == "__main__":
     print("CityWheels Help Desk Agent")
-    print("Type 'exit' to quit.")
+    print("Type 'exit' to quit or 'reset' to clear memory.")
 
-    while True:
-        question = input("\nYou: ").strip()
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    history = []
 
-        if question.lower() in {"exit", "quit"}:
-            break
+    try:
+        while True:
+            question = input("\nYou: ").strip()
 
-        if not question:
-            continue
+            if question.lower() in {"exit", "quit"}:
+                break
 
-        try:
-            answer = run_agent(question)
-            print(f"\nAgent: {answer}")
+            if question.lower() == "reset":
+                history.clear()
+                print("Conversation memory cleared.")
+                continue
 
-        except Exception as error:
-            print(f"\nAPI error: {error}")
+            if not question:
+                continue
+
+            try:
+                answer = run_agent(
+                    question,
+                    client=client,
+                    history=history
+                )
+
+                print(f"\nAgent: {answer}")
+
+            except Exception as error:
+                print(f"\nAgent error: {error}")
+                history.clear()
+                print("Conversation reset after error.")
+
+    finally:
+        client.close()
+

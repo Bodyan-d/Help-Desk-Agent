@@ -78,3 +78,10 @@ def test_specific_heading_scores_higher():
     )
 
     assert specific_score > general_score
+    
+def test_voucher_refund_method():
+    result = calculate_refund("CW-1004")
+
+    assert result["total_refund_eur"] == 73.0
+    assert result["paid_with"] == "voucher"
+    assert result["refund_method"] == "new CityWheels voucher"

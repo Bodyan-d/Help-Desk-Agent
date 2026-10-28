@@ -54,6 +54,11 @@ def calculate_refund(
 
     rental_refund = rental_price * refund_rate
     total_refund = rental_refund + deposit
+    
+    if booking["paid_with"] == "voucher":
+        refund_method = "new CityWheels voucher"    
+    else:
+        refund_method = "same payment card, within 5 working days"
 
     return {
         "booking_id": booking_id,
@@ -63,6 +68,8 @@ def calculate_refund(
         "deposit_refund_eur": float(deposit),
         "total_refund_eur": float(total_refund),
         "paid_with": booking["paid_with"],
+        "refund_method": refund_method,
+        "deposit_refund_method": "same as the original deposit payment method",
         "booking_fee_refund_eur": 0.0
     }
 
