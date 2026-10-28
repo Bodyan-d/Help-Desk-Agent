@@ -28,10 +28,12 @@ Rules:
   help@citywheels.example.
 - Do not claim that a booking has been cancelled.
 - Refund calculations use the fixed date from the assignment.
+- Answer the customer's specific question.
+  Do not suggest alternative bike types unless asked.
 """
 
 
-def run_agent(question: str, client=None, max_steps: int = 5) -> str:
+def run_agent(question: str, client=None, max_steps: int = 5, tool_calls=None) -> str:
     if client is None:
         client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
@@ -69,7 +71,14 @@ def run_agent(question: str, client=None, max_steps: int = 5) -> str:
         history.append(model_content)
 
         function_calls = response.function_calls or []
-        print(function_calls)
+        
+        if tool_calls is not None:
+            for call in function_calls:
+                tool_calls.append({
+                    "name": call.name,
+                    "args": dict(call.args or {})
+                })
+                
         if not function_calls:
             return response.text or "Sorry, no answer was generated."
 

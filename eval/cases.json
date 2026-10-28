@@ -1,0 +1,306 @@
+[
+  {
+    "id": "opening_hours_saturday",
+    "question": "What time does CityWheels open and close on Saturdays in June?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "08:00",
+        "8 am",
+        "8:00 am"
+      ],
+      [
+        "20:00",
+        "8 pm",
+        "8:00 pm"
+      ]
+    ]
+  },
+  {
+    "id": "winter_hours",
+    "question": "What time are you open on a Monday in January?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "09:00",
+        "9 am",
+        "9:00 am"
+      ],
+      [
+        "17:00",
+        "5 pm",
+        "5:00 pm"
+      ]
+    ]
+  },
+  {
+    "id": "ebike_day_price",
+    "question": "How much is an electric bike for a whole day?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "40",
+        "forty"
+      ]
+    ]
+  },
+  {
+    "id": "seven_day_discount",
+    "question": "Do you have a discount for rentals of seven days?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "15%",
+        "15 percent",
+        "fifteen percent"
+      ]
+    ]
+  },
+  {
+    "id": "ebike_age",
+    "question": "Can my 14-year-old rent an e-bike?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "16",
+        "sixteen"
+      ],
+      [
+        "no",
+        "not allowed",
+        "cannot",
+        "can't",
+        "minimum",
+        "at least",
+        "too young"
+      ]
+    ]
+  },
+  {
+    "id": "helmet",
+    "question": "Are helmets free, and are they mandatory under age 16?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "free",
+        "no charge",
+        "complimentary"
+      ],
+      [
+        "16",
+        "sixteen"
+      ],
+      [
+        "required",
+        "mandatory",
+        "must"
+      ]
+    ]
+  },
+  {
+    "id": "cash_deposit",
+    "question": "Can I pay the deposit in cash?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "cash"
+      ],
+      [
+        "no",
+        "not",
+        "cannot",
+        "can't",
+        "don't"
+      ]
+    ]
+  },
+  {
+    "id": "travel_abroad",
+    "question": "Can I take a CityWheels bike to another country?",
+    "tools": [
+      "search_policies"
+    ],
+    "contains": [
+      [
+        "not allowed",
+        "not permitted",
+        "cannot",
+        "can't",
+        "no",
+        "prohibited"
+      ]
+    ]
+  },
+  {
+    "id": "booking_status",
+    "question": "What is the status of booking CW-1001?",
+    "tools": [
+      "get_booking"
+    ],
+    "contains": [
+      [
+        "confirmed"
+      ]
+    ],
+    "booking_id": "CW-1001"
+  },
+  {
+    "id": "booking_missing",
+    "question": "Please find booking CW-9999.",
+    "tools": [
+      "get_booking"
+    ],
+    "contains": [
+      [
+        "not found",
+        "can't find",
+        "couldn't find",
+        "cannot find",
+        "no booking",
+        "does not exist",
+        "doesn't exist",
+        "unable to find",
+        "not exist",
+        "does not exist",
+        "doesn't exist",
+        "cannot be found",
+        "could not found"
+      ]
+    ],
+    "booking_id": "CW-9999"
+  },
+  {
+    "id": "refund_half",
+    "question": "How much would I get back if I cancel CW-1002?",
+    "tools": [
+      "calculate_refund"
+    ],
+    "contains": [
+      [
+        "340"
+      ]
+    ],
+    "booking_id": "CW-1002"
+  },
+  {
+    "id": "refund_exact_48h",
+    "question": "How much would I get back if I cancel CW-1007?",
+    "tools": [
+      "calculate_refund"
+    ],
+    "contains": [
+      [
+        "186"
+      ]
+    ],
+    "booking_id": "CW-1007"
+  },
+  {
+    "id": "refund_exact_24h",
+    "question": "How much would I get back if I cancel CW-1010?",
+    "tools": [
+      "calculate_refund"
+    ],
+    "contains": [
+      [
+        "170"
+      ]
+    ],
+    "booking_id": "CW-1010"
+  },
+  {
+    "id": "refund_deposit_only",
+    "question": "How much is the refund for CW-1003?",
+    "tools": [
+      "calculate_refund"
+    ],
+    "contains": [
+      [
+        "50"
+      ]
+    ],
+    "booking_id": "CW-1003"
+  },
+  {
+    "id": "refund_voucher",
+    "question": "If I cancel CW-1004, how much do I get back and in what form?",
+    "tools": [
+      "calculate_refund"
+    ],
+    "contains": [
+      [
+        "73"
+      ],
+      [
+        "voucher"
+      ]
+    ],
+    "booking_id": "CW-1004"
+  },
+  {
+    "id": "already_cancelled",
+    "question": "Can I cancel booking CW-1005 again and receive a refund?",
+    "tools": [
+      "calculate_refund"
+    ],
+    "contains": [
+      [
+        "already cancelled",
+        "already canceled",
+        "cannot be cancelled",
+        "can't be cancelled",
+        "not eligible",
+        "no refund",
+        "0"
+      ]
+    ],
+    "booking_id": "CW-1005"
+  },
+  {
+    "id": "refuse_live_stock",
+    "question": "Do you have five e-bikes available tomorrow?",
+    "tools": [],
+    "contains": [
+      [
+        "cannot",
+        "can't",
+        "unable",
+        "don't",
+        "not have",
+        "no information",
+        "confirm",
+        "check availability"
+      ],
+      [
+        "contact",
+        "help@citywheels.example",
+        "staff",
+        "support"
+      ]
+    ]
+    
+  },
+  {
+  "id": "refuse_offtopic",
+  "question": "What is the capital of Australia?",
+  "tools": [],
+  "contains": [
+    ["can't", "cannot", "unable", "only", "not able", "unable to", "not able to", "not able to answer"]
+  ],
+  "avoid": ["Canberra"]
+}
+]
